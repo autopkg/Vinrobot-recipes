@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Use this recipe to refer to processors in this directory.
+<![CDATA[
+<dict>
+	<key>Processor</key>
+	<string>com.github.vinrobot.SharedProcessor/TheSharedProcessor</string>
+</dict>
+]]>
+	</string>
+	<key>Identifier</key>
+	<string>com.github.vinrobot.SharedProcessor</string>
+	<key>Input</key>
+	<dict/>
+	<key>MinimumVersion</key>
+	<string>0.4.0</string>
+	<key>Process</key>
+	<array/>
+</dict>
+</plist>
