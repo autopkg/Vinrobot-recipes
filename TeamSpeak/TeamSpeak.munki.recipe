@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the latest version of TeamSpeak and imports it into Munki.</string>
+	<key>Identifier</key>
+	<string>com.github.vinrobot.munki.teamspeak</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>TeamSpeak</string>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/%NAME%</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>description</key>
+			<string>TeamSpeak is a VoIP application for audio communication between users on a chat channel.</string>
+			<key>developer</key>
+			<string>TeamSpeak</string>
+			<key>display_name</key>
+			<string>%NAME%</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.peshay.download.TeamSpeak</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.vinrobot.SharedProcessor/RegexReplace</string>
+			<key>Arguments</key>
+			<dict>
+				<key>result_output_var_name</key>
+				<string>version</string>
+				<key>re_string</key>
+				<string>%version%</string>
+				<key>re_pattern</key>
+				<string>client/(.*)</string>
+				<key>re_replacement</key>
+				<string>\1</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>MunkiPkginfoMerger</string>
+			<key>Arguments</key>
+			<dict>
+				<key>additional_pkginfo</key>
+				<dict>
+					<key>version</key>
+					<string>%version%</string>
+				</dict>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
