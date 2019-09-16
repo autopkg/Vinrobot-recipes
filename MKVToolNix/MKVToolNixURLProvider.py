@@ -1,10 +1,13 @@
 #!/usr/bin/python
 
 from __future__ import absolute_import
-import re, urllib2, urlparse
 
-from HTMLParser import HTMLParser
+import re
+import urllib2
+import urlparse
 from distutils.version import StrictVersion
+from HTMLParser import HTMLParser
+
 from autopkglib import Processor, ProcessorError
 
 __all__ = [ "MKVToolNixURLProvider" ]
