@@ -3,12 +3,20 @@
 from __future__ import absolute_import
 
 import re
-import urllib2
-import urlparse
 from distutils.version import StrictVersion
-from HTMLParser import HTMLParser
 
 from autopkglib import Processor, ProcessorError
+
+try:
+    from urllib.parse import urlparse  # For Python 3
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
+    from html.parser import HTMLParser
+except ImportError:
+    import urlparse  # For Python 2
+    from urllib2 import urlopen
+    from urllib2 import HTTPError
+    from HTMLParser import HTMLParser
 
 __all__ = ["MKVToolNixURLProvider"]
 
@@ -25,7 +33,7 @@ class URLFinder(HTMLParser):
 
     @staticmethod
     def get_all_urls_for_url(url):
-        content = urllib2.urlopen(url).read()
+        content = urlopen(url).read()
         parser = URLFinder()
         parser.feed(content)
         return parser.urls
@@ -72,7 +80,7 @@ class MKVToolNixURLProvider(Processor):
                     download_urls[version] = url
 
             return download_urls
-        except urllib2.HTTPError as ValueError:
+        except HTTPError as ValueError:
             raise ProcessorError("Could not parse downloads metadata.")
 
     def get_highest_version(self, versions):
