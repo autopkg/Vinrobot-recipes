@@ -10,8 +10,9 @@ from autopkglib import Processor, ProcessorError
 __all__ = [ "RegexReplace" ]
 
 class RegexReplace(Processor):
-	"""
-	Replaces sequence of the input that matches the pattern with the given replacement string.
+	"""Replaces sequence of the input that matches the pattern with the given
+	replacement string.
+
 	If the pattern isn't found, string is returned unchanged.
 	https://docs.python.org/2/library/re.html#re.sub
 	"""

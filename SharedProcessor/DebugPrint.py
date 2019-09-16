@@ -8,7 +8,10 @@ from autopkglib import Processor, ProcessorError
 __all__ = [ "DebugPrint" ]
 
 class DebugPrint(Processor):
-	"""Print a variable in console. Useful to debug."""
+	"""Print a variable in console.
+
+	Useful to debug.
+	"""
 	description = __doc__
 
 	input_variables = {
