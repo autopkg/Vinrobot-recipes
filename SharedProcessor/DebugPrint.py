@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import print_function
 from autopkglib import Processor, ProcessorError
 
 __all__ = [ "DebugPrint" ]
@@ -22,9 +24,9 @@ class DebugPrint(Processor):
 	def main(self):
 		variable_name = self.env['variable_name']
 		if variable_name == "*":
-			print self.env
+			print(self.env)
 		else:
-			print self.env[variable_name]
+			print(self.env[variable_name])
 
 
 if __name__ == "__main__":

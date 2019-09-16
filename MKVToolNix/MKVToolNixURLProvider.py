@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from __future__ import absolute_import
 import re, urllib2, urlparse
 
 from HTMLParser import HTMLParser
@@ -73,7 +74,7 @@ class MKVToolNixURLProvider(Processor):
 					download_urls[version] = url
 
 			return download_urls
-		except urllib2.HTTPError, ValueError:
+		except urllib2.HTTPError as ValueError:
 			raise ProcessorError("Could not parse downloads metadata.")
 
 	def get_highest_version(self, versions):
