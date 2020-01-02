@@ -17,7 +17,14 @@
 	<array>
 		<dict>
 			<key>Processor</key>
-			<string>MKVToolNixURLProvider</string>
+			<string>com.github.rustymyers.SharedProcessors/FossHubURLProvider</string>
+			<key>Arguments</key>
+			<dict>
+				<key>app_name</key>
+				<string>MKVToolNix</string>
+				<key>app_type</key>
+				<string>macOS</string>
+			</dict>
 		</dict>
 		<dict>
 			<key>Processor</key>
@@ -26,6 +33,11 @@
 			<dict>
 				<key>filename</key>
 				<string>%NAME%.dmg</string>
+				<key>request_headers</key>
+				<dict>
+					<key>Referer</key>
+					<string>https://www.fosshub.com/MKVToolNix.html</string>
+				</dict>
 			</dict>
 		</dict>
 		<dict>
