@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the latest version of MKVToolNix from FossHub and imports it into Munki.
+	All users should contact FossHub directly (https://www.fosshub.com/contact.html) to seek permission to use an automated tool for the purpose of redistributing this software on their internal network, as specified in their Terms of Service (https://www.fosshub.com/tos.html#fh-tou-o7).
+	You will need to provide them the IP address of the machine downloading FossHub software.
+	This recipe does not perform any tracking (cookies, advertising identifiers, and similar technologies) and respects the EU General Data Protection Regulation (GDPR) guidelines.
+	For more information see: https://macmule.com/2019/03/17/fosshub-autopkg/</string>
+	<key>Identifier</key>
+	<string>com.github.vinrobot.munki.mkvtoolnix.fosshub</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>MKVToolNix</string>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/%NAME%</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>description</key>
+			<string>MKVToolNix is a set of tools to create, alter and inspect Matroska files under Linux, other Unices and Windows.</string>
+			<key>developer</key>
+			<string>Moritz Bunkus</string>
+			<key>display_name</key>
+			<string>%NAME%</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.vinrobot.download.mkvtoolnix.fosshub</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
