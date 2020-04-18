@@ -5,16 +5,14 @@ from __future__ import absolute_import
 import re
 from distutils.version import StrictVersion
 
-from autopkglib import Processor, ProcessorError
+from autopkglib import Processor, ProcessorError, URLGetter
 
 try:
-    from urllib.parse import urlparse  # For Python 3
-    from urllib.request import urlopen
+    from urllib.parse import urljoin  # For Python 3
     from urllib.error import HTTPError
     from html.parser import HTMLParser
 except ImportError:
-    import urlparse  # For Python 2
-    from urllib2 import urlopen
+    from urlparse import urljoin  # For Python 2
     from urllib2 import HTTPError
     from HTMLParser import HTMLParser
 
@@ -32,14 +30,13 @@ class URLFinder(HTMLParser):
                     break
 
     @staticmethod
-    def get_all_urls_for_url(url):
-        content = urlopen(url).read()
+    def find_urls(content):
         parser = URLFinder()
         parser.feed(content)
         return parser.urls
 
 
-class MKVToolNixURLProvider(Processor):
+class MKVToolNixURLProvider(URLGetter):
     """Provides a version number and dmg download url for MKVToolNix."""
 
     description = __doc__
@@ -69,7 +66,8 @@ class MKVToolNixURLProvider(Processor):
 
     def get_download_urls_per_version(self):
         try:
-            urls = URLFinder.get_all_urls_for_url(self.source_url)
+            content = self.download(self.source_url, text=True)
+            urls = URLFinder.find_urls(content)
             url_pattern = re.compile(self.url_pattern)
 
             download_urls = {}
@@ -84,7 +82,7 @@ class MKVToolNixURLProvider(Processor):
             raise ProcessorError("Could not parse downloads metadata.")
 
     def get_highest_version(self, versions):
-        versions = map(lambda x: (x, StrictVersion(x)), versions)
+        versions = [(v, StrictVersion(v)) for v in versions]
 
         has_changed = True
         selected = versions[0]
@@ -115,7 +113,7 @@ class MKVToolNixURLProvider(Processor):
             )
 
             self.env["version"] = latest_version
-            self.env["url"] = urlparse.urljoin(self.source_url, latest_version_url)
+            self.env["url"] = urljoin(self.source_url, latest_version_url)
         except BaseException as e:
             raise ProcessorError("Could not get a download URL: {}".format(e))
 
