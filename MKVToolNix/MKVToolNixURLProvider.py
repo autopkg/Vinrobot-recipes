@@ -3,9 +3,13 @@
 from __future__ import absolute_import
 
 import re
-from distutils.version import StrictVersion
 
-from autopkglib import Processor, ProcessorError, URLGetter
+from autopkglib import (
+    APLooseVersion,
+    Processor,
+    ProcessorError,
+    URLGetter,
+)
 
 try:
     from urllib.parse import urljoin  # For Python 3
@@ -54,7 +58,7 @@ class MKVToolNixURLProvider(URLGetter):
             "required": False,
             "description": "Regex pattern that will applied to all URLs found on the"
             "download page. Extracted version number will be evaluated"
-            "by distutils StrictVersion."
+            "by APLooseVersion."
             "Default value is '/macos/MKVToolNix-([0-9.]+).dmg'",
         },
     }
@@ -82,7 +86,7 @@ class MKVToolNixURLProvider(URLGetter):
             raise ProcessorError("Could not parse downloads metadata.")
 
     def get_highest_version(self, versions):
-        versions = [(v, StrictVersion(v)) for v in versions]
+        versions = [(v, APLooseVersion(v)) for v in versions]
 
         has_changed = True
         selected = versions[0]
