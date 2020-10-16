@@ -86,18 +86,7 @@ class MKVToolNixURLProvider(URLGetter):
             raise ProcessorError("Could not parse downloads metadata.")
 
     def get_highest_version(self, versions):
-        versions = [(v, APLooseVersion(v)) for v in versions]
-
-        has_changed = True
-        selected = versions[0]
-        while has_changed:
-            has_changed = False
-            for version in versions:
-                if selected[1] < version[1]:
-                    has_changed = True
-                    selected = version
-
-        return selected[0]
+        return max(versions, key=APLooseVersion)
 
     def main(self):
         if "source_url" in self.env:
