@@ -2,6 +2,7 @@
 
 
 import re
+from typing import Iterable
 
 from autopkglib import APLooseVersion, ProcessorError, URLGetter
 
@@ -39,21 +40,26 @@ class MKVToolNixURLProvider(URLGetter):
 
     description = __doc__
 
-    source_url = "https://mkvtoolnix.download/macos/"
-    url_pattern = "/macos/MKVToolNix-([0-9.]+).dmg"
+    source_url = "https://mkvtoolnix.download/macos/releases/"
+    url_pattern = "^/macos/releases/([0-9.]+)/$"
+    file_pattern = "^/macos/releases/([0-9.]+)/MKVToolNix-([0-9.-]+)(-universal)?.dmg$"
 
     input_variables = {
         "source_url": {
             "required": False,
             "description": "URL that will be parsed for the final download URL."
-            "Default value is 'https://mkvtoolnix.download/macos/'",
+            f"Default value is '{source_url}'",
         },
         "url_pattern": {
             "required": False,
-            "description": "Regex pattern that will applied to all URLs found on the"
-            "download page. Extracted version number will be evaluated"
-            "by APLooseVersion."
-            "Default value is '/macos/MKVToolNix-([0-9.]+).dmg'",
+            "description": "Regex pattern that will applied to all URLs found on the release page."
+            "Extracted version number will be evaluated by APLooseVersion."
+            f"Default value is '{url_pattern}'",
+        },
+        "file_pattern": {
+            "required": False,
+            "description": "Regex pattern that will applied to all URLs found on the download page."
+            f"Default value is '{file_pattern}'",
         },
     }
 
@@ -62,25 +68,42 @@ class MKVToolNixURLProvider(URLGetter):
         "url": {"description": "Download URL."},
     }
 
-    def get_download_urls_per_version(self):
+    def get_all_versions(self) -> dict[str, str]:
         try:
             content = self.download(self.source_url, text=True)
             urls = URLFinder.find_urls(content)
             url_pattern = re.compile(self.url_pattern)
 
-            download_urls = {}
-            for url in urls:
-                m = url_pattern.search(url)
-                if m:
-                    version = m.group(1)
-                    download_urls[version] = url
+            return {
+                match.group(1): url for url in urls if (match := url_pattern.match(url))
+            }
 
-            return download_urls
         except HTTPError as e:
             raise ProcessorError("Could not parse downloads metadata.") from e
 
-    def get_highest_version(self, versions):
+    def get_highest_version(self, versions: Iterable[str]) -> str:
         return max(versions, key=APLooseVersion)
+
+    def get_download_urls(self, release_path: str) -> set[str]:
+        release_path = urljoin(self.source_url, release_path)
+
+        try:
+            content = self.download(release_path, text=True)
+            urls = URLFinder.find_urls(content)
+            file_pattern = re.compile(self.file_pattern)
+
+            return {url for url in urls if file_pattern.match(url)}
+
+        except HTTPError as e:
+            raise ProcessorError("Could not parse downloads metadata.") from e
+
+    def get_download_url(self, release_path: str) -> str:
+        urls = self.get_download_urls(release_path)
+
+        if len(urls) > 1:
+            raise ProcessorError(f"Multiple download URLs found: {', '.join(urls)}")
+
+        return next(iter(urls))
 
     def main(self):
         if "source_url" in self.env:
@@ -89,9 +112,9 @@ class MKVToolNixURLProvider(URLGetter):
             self.url_pattern = self.env["url_pattern"]
 
         try:
-            download_urls = self.get_download_urls_per_version()
-            latest_version = self.get_highest_version(download_urls.keys())
-            latest_version_url = download_urls[latest_version]
+            all_versions = self.get_all_versions()
+            latest_version = self.get_highest_version(all_versions.keys())
+            latest_version_url = self.get_download_url(all_versions[latest_version])
 
             self.output(
                 f"Found download URL for {latest_version}: {latest_version_url}"
@@ -99,6 +122,7 @@ class MKVToolNixURLProvider(URLGetter):
 
             self.env["version"] = latest_version
             self.env["url"] = urljoin(self.source_url, latest_version_url)
+
         except BaseException as e:
             raise ProcessorError(f"Could not get a download URL: {e}") from e
 
