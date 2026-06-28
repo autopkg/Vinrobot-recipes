@@ -1,0 +1,18 @@
+{
+	"name": "Debian",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"EditorConfig.EditorConfig",
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-python.pylint",
+				"ms-python.isort",
+				"charliermarsh.ruff"
+			]
+		}
+	}
+}
