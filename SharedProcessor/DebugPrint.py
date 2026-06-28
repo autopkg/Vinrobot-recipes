@@ -1,9 +1,7 @@
 #!/usr/local/autopkg/python
-# -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, print_function
 
-from autopkglib import Processor, ProcessorError
+from autopkglib import Processor
 
 __all__ = ["DebugPrint"]
 
