@@ -14,28 +14,28 @@
 		<string>Aegisub</string>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>1.0.0</string>
+	<string>1.1.0</string>
 	<key>Process</key>
 	<array>
 		<dict>
-			<key>Processor</key>
-			<string>GitHubReleasesInfoProvider</string>
 			<key>Arguments</key>
 			<dict>
-				<key>github_repo</key>
-				<string>%GITHUB_REPO%</string>
 				<key>asset_regex</key>
 				<string>^%NAME%-.*\.dmg$</string>
+				<key>github_repo</key>
+				<string>%GITHUB_REPO%</string>
 			</dict>
+			<key>Processor</key>
+			<string>GitHubReleasesInfoProvider</string>
 		</dict>
 		<dict>
-			<key>Processor</key>
-			<string>URLDownloader</string>
 			<key>Arguments</key>
 			<dict>
 				<key>filename</key>
 				<string>%NAME%.dmg</string>
 			</dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
 		</dict>
 		<dict>
 			<key>Processor</key>

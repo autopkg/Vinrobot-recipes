@@ -4,12 +4,12 @@
 <dict>
 	<key>Description</key>
 	<string>Use this recipe to refer to processors in this directory.
-<![CDATA[
-<dict>
-	<key>Processor</key>
-	<string>com.github.vinrobot.SharedProcessor/TheSharedProcessor</string>
-</dict>
-]]>
+
+&lt;dict&gt;
+	&lt;key&gt;Processor&lt;/key&gt;
+	&lt;string&gt;com.github.vinrobot.SharedProcessor/TheSharedProcessor&lt;/string&gt;
+&lt;/dict&gt;
+
 	</string>
 	<key>Identifier</key>
 	<string>com.github.vinrobot.SharedProcessor</string>

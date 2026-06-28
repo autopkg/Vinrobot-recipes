@@ -1,24 +1,18 @@
 #!/usr/local/autopkg/python
 
-from __future__ import absolute_import
 
 import re
 
-from autopkglib import (
-    APLooseVersion,
-    Processor,
-    ProcessorError,
-    URLGetter,
-)
+from autopkglib import APLooseVersion, ProcessorError, URLGetter
 
 try:
-    from urllib.parse import urljoin  # For Python 3
-    from urllib.error import HTTPError
     from html.parser import HTMLParser
+    from urllib.error import HTTPError
+    from urllib.parse import urljoin  # For Python 3
 except ImportError:
-    from urlparse import urljoin  # For Python 2
-    from urllib2 import HTTPError
     from HTMLParser import HTMLParser
+    from urllib2 import HTTPError
+    from urlparse import urljoin  # For Python 2
 
 __all__ = ["MKVToolNixURLProvider"]
 
@@ -77,13 +71,13 @@ class MKVToolNixURLProvider(URLGetter):
             download_urls = {}
             for url in urls:
                 m = url_pattern.search(url)
-                if not (m is None):
+                if m:
                     version = m.group(1)
                     download_urls[version] = url
 
             return download_urls
-        except HTTPError as ValueError:
-            raise ProcessorError("Could not parse downloads metadata.")
+        except HTTPError as e:
+            raise ProcessorError("Could not parse downloads metadata.") from e
 
     def get_highest_version(self, versions):
         return max(versions, key=APLooseVersion)
@@ -100,15 +94,13 @@ class MKVToolNixURLProvider(URLGetter):
             latest_version_url = download_urls[latest_version]
 
             self.output(
-                "Found download URL for {}: {}".format(
-                    latest_version, latest_version_url
-                )
+                f"Found download URL for {latest_version}: {latest_version_url}"
             )
 
             self.env["version"] = latest_version
             self.env["url"] = urljoin(self.source_url, latest_version_url)
         except BaseException as e:
-            raise ProcessorError("Could not get a download URL: {}".format(e))
+            raise ProcessorError(f"Could not get a download URL: {e}") from e
 
 
 if __name__ == "__main__":

@@ -1,0 +1,9 @@
+[MAIN]
+
+disable=
+	import-error,
+	invalid-name,
+	too-few-public-methods,
+	missing-module-docstring,
+	missing-class-docstring,
+	missing-function-docstring,
