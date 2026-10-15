@@ -42,7 +42,9 @@ class MKVToolNixURLProvider(URLGetter):
 
     source_url = "https://mkvtoolnix.download/macos/releases/"
     url_pattern = "^(?:\./|/macos/releases/)?([0-9.]+)/?$"
-    file_pattern = "^(?:\./|/macos/releases/)?([0-9.]+)/MKVToolNix-([0-9.-]+)(-universal)?\.dmg$"
+    file_pattern = (
+        "^(?:\./|/macos/releases/)?([0-9.]+)/MKVToolNix-([0-9.-]+)(-universal)?\.dmg$"
+    )
 
     input_variables = {
         "source_url": {
