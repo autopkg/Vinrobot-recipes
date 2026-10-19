@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/homebysix/pre-commit-macadmin
-    rev: 50336b2df057db6c6b3421e24d5f49f25139e27d  # frozen: v1.25.0
+    rev: f185830bd74d90dab3d6d82dad5acb86b9e5329f  # frozen: v1.25.1
     hooks:
       - id: check-autopkg-recipes
         args: ["--recipe-prefix=com.github.vinrobot.", "--strict", "--"]
@@ -26,15 +26,15 @@ repos:
       - id: trailing-whitespace
         args: ["--markdown-linebreak-ext=md"]
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 4160603246a6b365d4a2af661c6d71b0a0f50478  # frozen: 26.5.1
+    rev: a5439e9af2ff9371297bb1a76a01b8ad17989b88  # frozen: 26.10.1
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
-    rev: dac090ce4d9ee313d086e2e89ab1acb8c2664fa1  # frozen: 9.0.0a3
+    rev: f97a190a40acf1ccdce6689df518a0321d41c1a3  # frozen: 10.0.0b1
     hooks:
       - id: isort
   - repo: https://github.com/pycqa/flake8
-    rev: d93590f5be797aabb60e3b09f2f52dddb02f349f  # frozen: 7.3.0
+    rev: cfbbfdeb2391c14a37e101e92a77f54f329e1726  # frozen: 7.4.1
     hooks:
       - id: flake8
   - repo: https://github.com/asottile/blacken-docs
@@ -43,6 +43,6 @@ repos:
       - id: blacken-docs
         additional_dependencies: [black==24.10.0]
   - repo: https://github.com/pycqa/pylint
-    rev: 8a396357098337ba8be714fffdf2d00947a9778c  # frozen: v4.0.6
+    rev: 233ae8862a1a94c1797ec664813e1aeef3142622  # frozen: v4.1.3
     hooks:
       - id: pylint
